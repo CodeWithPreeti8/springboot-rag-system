@@ -236,7 +236,7 @@ Output: {
 
 **Preeti Singh**
 - GitHub: [@CodeWithPreeti8](https://github.com/CodeWithPreeti8)
-- LinkedIn: [Preeti Singh](https://www.linkedin.com/in/preeti-singh-ai/)
+- LinkedIn: [Preeti Singh](https://www.linkedin.com/in/preeti-singh-088000202/).
 - Email: singpreeti08@gmail.com
 
 ---
