@@ -1,0 +1,27 @@
+# 🐛 Bug Fix: Wrong Document Selection
+
+## Problem
+Question: "What is Java?"
+Selected: Python Programming (WRONG!)
+Expected: Java Programming (CORRECT!)
+
+## Root Cause
+Semantic embeddings too similar for programming-related documents.
+
+## Solution
+Implemented KeywordService with:
+- Dynamic keyword extraction
+- Word boundary regex matching
+- Deterministic document selection
+
+## Files Changed
+- RagService.java (refactored matching logic)
+- KeywordService.java (NEW - added keyword extraction)
+
+## Test Results
+- "What is Java?" → Java Programming ✅
+- "What is JavaScript?" → HTML CSS JavaScript ✅
+- "What is Python?" → Python Data Science ✅
+- "Machine learning" → Python Data Science ✅
+
+All tests: 4/4 PASSED

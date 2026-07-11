@@ -17,15 +17,15 @@ public class EmbeddingUtil {
      * Convert user question to embedding (numbers)
      * 
      * INPUT: "What is Java?"
-     * OUTPUT: [0.05, 0.1, 0.08, 0.0, ...] (100 dimensions)
+     * OUTPUT: [0.05, 0.1, 0.08, 0.0, ...] (384 dimensions)
      * 
      * WHEN CALLED: Every time user asks a question
      */
     public static double[] generateSimpleEmbedding(String text) {
         System.out.println("[STEP 1] Generating embedding for: " + text);
         
-        // Create 55-dimensional embedding (MATCH PYTHON TF-IDF)
-        double[] embedding = new double[55];
+        // Create 384-dimensional embedding
+        double[] embedding = new double[384];
         
         // Convert to lowercase
         String normalized = text.toLowerCase();
@@ -38,7 +38,7 @@ public class EmbeddingUtil {
         for (String word : words) {
             if (word.length() > 0) {
                 // Hash word to get dimension (0-54, not 0-99)
-                int index = Math.abs(word.hashCode()) % 55;
+                int index = Math.abs(word.hashCode()) % 384;
                 embedding[index] += 0.1;
                 System.out.println("  Word '" + word + "' → dimension " + index);
             }

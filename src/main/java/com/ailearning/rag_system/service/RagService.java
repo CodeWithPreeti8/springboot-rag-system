@@ -19,6 +19,9 @@ public class RagService {
     @Autowired
     private GroqService groqService;
     
+    @Autowired
+    private KeywordService keywordService;  // Add this!
+
     public RagResponse processQuestion(RagRequest request) {
         
         String question = request.getQuestion();
@@ -29,123 +32,71 @@ public class RagService {
         System.out.println("Question: " + question);
         System.out.println("=".repeat(60));
         
-        
-        // ================================================
-        // STEP 1: Generate embedding for question
-        // ================================================
-        System.out.println("\n[STEP 1] Generating question embedding...");
-        double[] questionEmbedding = EmbeddingUtil.generateSimpleEmbedding(question);
-        System.out.println("[STEP 1] ✓ Question embedding generated!");
-        System.out.println("         Embedding dimensions: " + questionEmbedding.length);
-        System.out.println("         First 5 values: [" + 
-                          String.format("%.3f", questionEmbedding[0]) + ", " +
-                          String.format("%.3f", questionEmbedding[1]) + ", " +
-                          String.format("%.3f", questionEmbedding[2]) + ", " +
-                          String.format("%.3f", questionEmbedding[3]) + ", " +
-                          String.format("%.3f", questionEmbedding[4]) + ", ...]");
-        
-        
-        // ================================================
-        // STEP 2: Get all documents from database
-        // ================================================
-        System.out.println("\n[STEP 2] Fetching documents from database...");
+        // STEP 1: Get all documents
+        System.out.println("\n[STEP 1] Fetching documents from database...");
         List<Document> allDocuments = documentRepository.findAll();
-        System.out.println("[STEP 2] ✓ Documents fetched!");
-        System.out.println("         Total documents: " + allDocuments.size());
+        System.out.println("[STEP 1] ✓ Found " + allDocuments.size() + " documents");
         
+        // STEP 2: Extract keywords from question
+        System.out.println("\n[STEP 2] Extracting keywords from question...");
+        List<String> questionKeywords = keywordService.extractKeywords(question);
+        System.out.println("[STEP 2] ✓ Keywords: " + questionKeywords);
         
-        // ================================================
-        // STEP 3: Find most similar document
-        // ================================================
-        System.out.println("\n[STEP 3] Calculating distances and finding similarity...");
+        // STEP 3: Find best matching document
+        System.out.println("\n[STEP 3] Finding best matching document...");
         
-        Document mostSimilarDoc = null;
-        double smallestDistance = Double.MAX_VALUE;
+        Document bestDocument = null;
+        int maxScore = 0;
         
-        // Loop through each document
         for (Document doc : allDocuments) {
+            // Calculate match score dynamically!
+            int score = keywordService.calculateMatchScore(question, doc.getContent());
             
-            // Parse embedding from database (TEXT to numbers)
-            double[] docEmbedding = EmbeddingUtil.parseEmbedding(doc.getEmbedding());
+            System.out.println("  Document " + doc.getId() + 
+                             " (\"" + doc.getTitle() + "\"): " + score + " points");
             
-            // Only process if embedding exists and has values
-            if (docEmbedding.length > 0) {
-                
-                // Calculate distance between question and document
-                double distance = EmbeddingUtil.calculateDistance(
-                    questionEmbedding, 
-                    docEmbedding
-                );
-                
-                // Print result for this document
-                System.out.println("  Document ID " + doc.getId() + 
-                                 " (\"" + doc.getTitle() + "\"): distance = " + 
-                                 String.format("%.4f", distance));
-                
-                // Keep track of smallest distance (most similar)
-                if (distance < smallestDistance) {
-                    smallestDistance = distance;
-                    mostSimilarDoc = doc;
-                }
+            if (score > maxScore) {
+                maxScore = score;
+                bestDocument = doc;
             }
         }
         
-        System.out.println("[STEP 3] ✓ Distance calculation complete!");
-        
-        
-        // ================================================
-        // STEP 4: Handle case where no documents found
-        // ================================================
-        if (mostSimilarDoc == null) {
-            System.out.println("\n[WARNING] No relevant documents found!");
-            
+        // Handle no match
+        if (bestDocument == null || maxScore == 0) {
+            System.out.println("\n[WARNING] No matching document found!");
             return new RagResponse(
                 question,
-                "No relevant documents found in the database",
+                "No relevant documents found in database",
                 "N/A",
                 null,
                 System.currentTimeMillis()
             );
         }
-     // ================================================
-        // STEP 5: Print most similar document
-        // ================================================
-        System.out.println("\n[STEP 4] Most similar document found!");
-        System.out.println("         ID: " + mostSimilarDoc.getId());
-        System.out.println("         Title: " + mostSimilarDoc.getTitle());
-        System.out.println("         Distance: " + String.format("%.4f", smallestDistance));
-        System.out.println("         Content length: " + mostSimilarDoc.getContent().length() + " chars");
         
+        System.out.println("\n[STEP 4] Best document selected!");
+        System.out.println("  ID: " + bestDocument.getId());
+        System.out.println("  Title: " + bestDocument.getTitle());
+        System.out.println("  Match score: " + maxScore);
         
-        // ================================================
-        // STEP 6: Send to Groq/ChatGPT
-        // ================================================
-        System.out.println("\n[STEP 5] Sending to Groq API for answer generation...");
-        String answer = groqService.generateAnswer(question, mostSimilarDoc.getContent());
+        // STEP 5: Send to Groq
+        System.out.println("\n[STEP 5] Sending to Groq API...");
+        String answer = groqService.generateAnswer(question, bestDocument.getContent());
         System.out.println("[STEP 5] ✓ Answer generated!");
-        System.out.println("         Answer length: " + answer.length() + " chars");
         
-        
-        // ================================================
-        // STEP 7: Build and return response
-        // ================================================
+        // STEP 6: Build response
         System.out.println("\n[STEP 6] Building response...");
-        
         RagResponse response = new RagResponse(
             question,
             answer,
-            mostSimilarDoc.getTitle(),
-            mostSimilarDoc.getId(),
+            bestDocument.getTitle(),
+            bestDocument.getId(),
             System.currentTimeMillis()
         );
         
-        System.out.println("[STEP 6] ✓ Response built!");
         System.out.println("=".repeat(60));
-        System.out.println("RAG SERVICE: Processing complete!");
+        System.out.println("RAG SERVICE: Complete!");
         System.out.println("=".repeat(60) + "\n");
         
         return response;
     }
-
-
 }
