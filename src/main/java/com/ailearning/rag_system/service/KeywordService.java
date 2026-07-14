@@ -53,17 +53,25 @@ public class KeywordService {
      * How many keywords from question match in document
      */
     public int calculateMatchScore(String question, String document) {
-        List<String> questionKeywords = extractKeywords(question);
+    	List<String> questionKeywords = extractKeywords(question);
         String docLower = document.toLowerCase();
         
         int score = 0;
+        
+        System.out.println("\n[DEBUG] Scoring document:");
+        System.out.println("Keywords to search: " + questionKeywords);
+        System.out.println("Document length: " + docLower.length());
+        
         for (String keyword : questionKeywords) {
-            // Check if keyword exists in document
-            if (containsWord(docLower, keyword)) {
-                score += 10;  // Each match = 10 points
+            boolean found = containsWord(docLower, keyword);
+            System.out.println("  Keyword '" + keyword + "': " + (found ? "✅ FOUND" : "❌ NOT FOUND"));
+            
+            if (found) {
+                score += 10;
             }
         }
         
+        System.out.println("Final score: " + score);
         return score;
     }
     
