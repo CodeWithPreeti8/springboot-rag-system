@@ -1,10 +1,10 @@
 # 🚀 RAG System — Retrieval Augmented Generation
 
 **Production-ready Retrieval Augmented Generation system** built with **Spring Boot 3.5, PostgreSQL, and Groq AI API**. Implements intelligent hybrid document retrieval with **99%+ accuracy** using dynamic keyword extraction and semantic re-ranking.
-(02-ask-question.png)
-(05-ask-paraphrased-question.png)
-(03-console-output.png)
-(04-database.png)
+!(02-ask-question.png)
+!(05-ask-paraphrased-question.png)
+!(03-console-output.png)
+!(04-database.png)
 
 ---
 
@@ -35,8 +35,10 @@
 
 **Retrieval Augmented Generation** = Make AI smart about YOUR documents!
 
-Traditional:  Question → ChatGPT → Generic answer
-RAG System:   Question → Search docs → ChatGPT → Accurate answer (from your data!)
+**Traditional:  Question → ChatGPT → Generic answer**
+
+**RAG System:   Question → Search docs → ChatGPT → Accurate answer (from your data!)**
+
 ---
 
 ## 🛠️ Tech Stack
@@ -59,25 +61,27 @@ RAG System:   Question → Search docs → ChatGPT → Accurate answer (from you
 
 **Layer 1: Keyword Matching (Fast & Precise)**
 
-- Extract keywords from user questions dynamically
-- Search for exact word matches in documents
-- Score documents based on keyword presence (10 points per match)
-- Response time: < 10ms
-- Accuracy for direct queries: 100%
+"Extract keywords from user questions dynamically"
+"Search for exact word matches in documents"
+"Score documents based on keyword presence (10 points per match)"
+"Response time: < 10ms"
+"Accuracy for direct queries: 100%"
 
 
 **Layer 2: Semantic Re-ranking (Flexible & Accurate)**
 
-- Fallback when keyword matching score is 0
-- Generate embeddings for questions (384-dimensional vectors)
-- Calculate cosine similarity with document embeddings
-- Return document with highest semantic similarity
-- Response time: < 50ms
-- Accuracy for paraphrased queries: 95%+
+"Fallback when keyword matching score is 0"
+"Generate embeddings for questions (384-dimensional vectors)"
+"Calculate cosine similarity with document embeddings"
+"Return document with highest semantic similarity"
+"Response time: < 50ms"
+"Accuracy for paraphrased queries: 95%+"
 
 **Overall Accuracy: 99%+**
 
 ---
+
+## System Flow
 
 User Question
     ↓
@@ -115,16 +119,19 @@ Score > 0? ──→ YES → Select Document ──┐
  ***Clone repository***
  
 git clone https://github.com/CodeWithPreeti8/springboot-rag-system.git
+
 cd springboot-rag-system
 
 ***Set environment variables (Windows PowerShell)***
 
 $env:GROQ_API_KEY = "your_api_key"
+
 $env:DB_PASSWORD = "your_postgres_password"
 
 ***Set environment variables (Linux/Mac)***
 
 export GROQ_API_KEY="your_api_key"
+
 export DB_PASSWORD="your_postgres_password"
 
 ***Create database***
@@ -206,26 +213,32 @@ Try these questions to test hybrid retrieval:
 **Step-by-Step Process**
 
 ## 1)Receive Question
+      
       -> User asks: "Which framework simplifies Java development?"
 
 ## 2)Extract Keywords (KeywordService)
+     
       -> Keywords: [framework, simplifies, java, development]
 
 ## 3)Keyword Matching (Layer 1)
+      
       -> Search documents for keyword presence
       -> Spring Boot doc: 40/40 points ✅
       -> Python doc: 0 points
       -> Web doc: 0 points
 
 ## 4)Select Best Document
+      
       -> Spring Boot document selected
       -> If score = 0, use Semantic Re-ranking (Layer 2)
 
 ## 5)Send to Groq API
+      
       -> Prompt: "Based on [Spring Boot doc]... Answer: [question]"
       -> LLaMA 3.1 generates response
 
 ## 6)Return Answer
+     
       -> Question, Answer, Source document, ID, Timestamp
 
 ---
