@@ -81,26 +81,36 @@
 
 ---
 
-## System Flow
+### System Workflow
 
-```mermaid
-graph TD
-    A([User Question]) --> B[Extract Keywords <br><i>KeywordService</i>]
-    B --> C{Keyword Matching <br><b>Layer 1 - FAST</b>}
-    
-    C -->|Score > 0| D[Select Document]
-    C -->|Score = 0| E[Semantic Re-ranking <br><b>Layer 2 - FLEXIBLE</b>]
-    
-    D --> F[Send to Groq API <br><i>LLaMA 3.1</i>]
-    E --> F
-    
-    F --> G[Generate Answer]
-    G --> H([Return with Source ✅])
-
-    %% Styling
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style H fill:#bbf,stroke:#333,stroke-width:2px
-    style C fill:#ff9,stroke:#333,stroke-width:2px
+       User Question
+             │
+             ▼
+      Extract Keywords 
+      (KeywordService)
+             │
+             ▼
+      Keyword Matching 
+      (Layer 1 - FAST)
+             │
+      ┌──────┴──────┐
+  Score > 0?    Score = 0?
+      │             │
+      ▼ (YES)       ▼ (NO)
+   Select       Semantic Re-ranking
+  Document     (Layer 2 - FLEXIBLE)
+      │             │
+      └──────┬──────┘
+             │
+             ▼
+     Send to Groq API 
+        (LLaMA 3.1)
+             │
+             ▼
+      Generate Answer
+             │
+             ▼
+    Return with Source ✅
 
 ---
 
