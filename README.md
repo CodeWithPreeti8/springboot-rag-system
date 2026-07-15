@@ -83,38 +83,24 @@
 
 ## System Flow
 
-User Question
+```mermaid
+graph TD
+    A([User Question]) --> B[Extract Keywords <br><i>KeywordService</i>]
+    B --> C{Keyword Matching <br><b>Layer 1 - FAST</b>}
+    
+    C -->|Score > 0| D[Select Document]
+    C -->|Score = 0| E[Semantic Re-ranking <br><b>Layer 2 - FLEXIBLE</b>]
+    
+    D --> F[Send to Groq API <br><i>LLaMA 3.1</i>]
+    E --> F
+    
+    F --> G[Generate Answer]
+    G --> H([Return with Source ✅])
 
-    ↓
-    
-Extract Keywords (KeywordService)
-
-    ↓
-    
-Keyword Matching (Layer 1 - FAST)
-
-    ↓
-    
-Score > 0? ──→ YES → Select Document ──┐
-
-    │                                   │
-    
-    └─→ NO → Semantic Re-ranking ───────┤
-    
-          (Layer 2 - FLEXIBLE)          │
-          
-                                        ↓
-                                        
-                              Send to Groq API(LLaMA 3.1)
-                              
-                                        ↓
-                                        
-                              Generate Answer
-                              
-                                        ↓
-                                        
-                              Return with Source ✅
-                              
+    %% Styling
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style H fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#ff9,stroke:#333,stroke-width:2px
 
 ---
 
@@ -335,33 +321,37 @@ Pattern: \bjava\b
 
 ---
 
-## 📁 Project Structure
+### Project Architecture
 
-src/main/java/com/ailearning/rag_system/
-├── controller/
-│   └── RagController.java              # HTTP endpoints
-├── service/
-│   ├── RagService.java                 # Orchestration & hybrid retrieval
-│   ├── KeywordService.java             # Keyword extraction & scoring
-│   ├── GroqService.java                # Groq API integration
-│   └── EmbeddingUtil.java              # Embedding utilities
-├── repository/
-│   └── DocumentRepository.java         # Database access (JPA)
-├── entity/
-│   └── Document.java                   # Document entity model
-├── dto/
-│   ├── RagRequest.java                 # API request DTO
-│   └── RagResponse.java                # API response DTO
-└── RagSystemApplication.java           # Application entry point
-
-src/main/resources/
-└── application.properties               # Configuration
-
-pom.xml                                  # Maven dependencies
-.gitignore                               # Git configuration
-README.md                                # This file
-BUG_FIX_DOCUMENTATION.md                 # Bug fix explanation
-generate_embeddings_ml.py                # Python embedding generator
+```text
+src/
+├── main/
+│   ├── java/
+│   │   └── com/
+│   │       └── ailearning/
+│   │           └── rag_system/
+│   │               ├── controller/
+│   │               │   └── RagController.java         # HTTP endpoints
+│   │               ├── service/
+│   │               │   ├── RagService.java            # Orchestration & hybrid retrieval
+│   │               │   ├── KeywordService.java        # Keyword extraction & scoring
+│   │               │   ├── GroqService.java           # Groq API integration
+│   │               │   └── EmbeddingUtil.java         # Embedding utilities
+│   │               ├── repository/
+│   │               │   └── DocumentRepository.java    # Database access (JPA)
+│   │               ├── entity/
+│   │               │   └── Document.java              # Document entity model
+│   │               ├── dto/
+│   │               │   ├── RagRequest.java            # API request DTO
+│   │               │   └── RagResponse.java           # API response DTO
+│   │               └── RagSystemApplication.java      # Application entry point
+│   └── resources/
+│       └── application.properties                      # Configuration
+├── pom.xml                                            # Maven dependencies
+├── .gitignore                                         # Git configuration
+├── README.md                                          # This file
+├── BUG_FIX_DOCUMENTATION.md                           # Bug fix explanation
+└── generate_embeddings_ml.py                          # Python embedding generator
 
 ---
 
@@ -423,8 +413,6 @@ Environment Variables Required:
 Preeti Singh
 Backend Java Developer | AI/ML Enthusiast | Building in Public
 
-**GitHub:** @CodeWithPreeti8
-**LinkedIn:** Preeti Singh
-**Email:** singpreeti08@gmail.com
-LinkedIn: Preeti Singh
-Email: singpreeti08@gmail.com
+"**GitHub:** @CodeWithPreeti8"
+"**LinkedIn:** Preeti Singh"
+"**Email:** singpreeti08@gmail.com"
