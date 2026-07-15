@@ -102,27 +102,32 @@ Score > 0? ──→ YES → Select Document ──┐
 ---
 
 ### Installation
-
-    bash
-// Clone repository
+ 
+ ***Clone repository***
+ 
 git clone https://github.com/CodeWithPreeti8/springboot-rag-system.git
 cd springboot-rag-system
 
-// Set environment variables (Windows PowerShell)
+***Set environment variables (Windows PowerShell)***
+
 $env:GROQ_API_KEY = "your_api_key"
 $env:DB_PASSWORD = "your_postgres_password"
 
-// Set environment variables (Linux/Mac)
+***Set environment variables (Linux/Mac)***
+
 export GROQ_API_KEY="your_api_key"
 export DB_PASSWORD="your_postgres_password"
 
-// Create database
+***Create database***
+
 psql -U postgres -c "CREATE DATABASE rag_system;"
 
-// Build project
+***Build project***
+
 mvn clean install
 
-// Start application
+***Start application***
+
 mvn spring-boot:run
 
 ---
@@ -134,16 +139,21 @@ Application runs at: http://localhost:8080
 ### Health Check
 
 GET /api/rag/health
+
 Response: "RAG System is running!"
 
 ### Ask Question
 
 POST /api/rag/ask
+
 Request:
+
 {
 "question": "What is Java?"
 }
+
 Response:
+
 {
 "question": "What is Java?",
 "answer": "Java is an object-oriented programming language...",
@@ -163,6 +173,7 @@ GET http://localhost:8080/api/rag/health
 **Ask Questions**
 
 POST http://localhost:8080/api/rag/ask
+
 Body: {"question": "What is Java?"}
 
 Try these questions to test hybrid retrieval:
