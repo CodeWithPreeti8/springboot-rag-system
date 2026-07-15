@@ -84,15 +84,29 @@
 ### System Workflow
 
 ```text
-       User Question
-└── Extract Keywords (KeywordService)
-    └── Keyword Matching (Layer 1 - FAST)
-        ├── [Score > 0] ──> YES ──> Select Document ──┐
-        │                                             │
-        └── [Score = 0] ──> NO  ──> Semantic Re-ranking (Layer 2 - FLEXIBLE)
-                                    └── Send to Groq API (LLaMA 3.1)
-                                        └── Generate Answer
-                                            └── Return with Source ✅
+               User Question
+                     │
+                     ▼
+       Extract Keywords (KeywordService)
+                     │
+                     ▼
+       Keyword Matching (Layer 1 - FAST)
+                     │
+                     ▼
+       Score > 0? ───► YES ──► Select Document ───┐
+            │                                     │
+            └────────► NO  ──► Semantic Re-ranking│
+                               (Layer 2 - FLEXIBLE)
+                                                  │
+                                                  ▼
+                                           Send to Groq API
+                                             (LLaMA 3.1)
+                                                  │
+                                                  ▼
+                                           Generate Answer
+                                                  │
+                                                  ▼
+                                         Return with Source ✅
 
 ```
 ---
