@@ -83,35 +83,18 @@
 
 ### System Workflow
 
+```text
        User Question
-             │
-             ▼
-      Extract Keywords 
-      (KeywordService)
-             │
-             ▼
-      Keyword Matching 
-      (Layer 1 - FAST)
-             │
-      ┌──────┴──────┐
-  Score > 0?    Score = 0?
-      │             │
-      ▼ (YES)       ▼ (NO)
-   Select       Semantic Re-ranking
-  Document     (Layer 2 - FLEXIBLE)
-      │             │
-      └──────┬──────┘
-             │
-             ▼
-     Send to Groq API 
-        (LLaMA 3.1)
-             │
-             ▼
-      Generate Answer
-             │
-             ▼
-    Return with Source ✅
+└── Extract Keywords (KeywordService)
+    └── Keyword Matching (Layer 1 - FAST)
+        ├── [Score > 0] ──> YES ──> Select Document ──┐
+        │                                             │
+        └── [Score = 0] ──> NO  ──> Semantic Re-ranking (Layer 2 - FLEXIBLE)
+                                    └── Send to Groq API (LLaMA 3.1)
+                                        └── Generate Answer
+                                            └── Return with Source ✅
 
+```
 ---
 
 ## 🚀 Quick Start
@@ -363,6 +346,7 @@ src/
 ├── BUG_FIX_DOCUMENTATION.md                           # Bug fix explanation
 └── generate_embeddings_ml.py                          # Python embedding generator
 
+```
 ---
 
 ## 🔐 Security
