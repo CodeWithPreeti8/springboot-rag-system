@@ -11,14 +11,23 @@
 ## ✨ Features
 
 ✅ **Hybrid Retrieval Approach** — Keyword matching + semantic re-ranking for 99%+ accuracy
+
 ✅ **Dynamic Keyword Extraction** — Automatically identify relevant keywords from any query
+
 ✅ **Word Boundary Regex Matching** — Prevent false-positive substring matches (e.g., "java" vs "javascript")
+
 ✅ **Semantic Re-ranking Fallback** — Handle paraphrased queries with embedding similarity
+
 ✅ **AI-Powered Answers** — Groq/LLaMA 3.1 integration for intelligent responses
+
 ✅ **REST API** — Clean, production-ready endpoints
+
 ✅ **PostgreSQL** — Reliable data persistence with JSON embedding storage
+
 ✅ **Scalable** — Works with unlimited documents
+
 ✅ **Production-Ready** — Error handling, comprehensive logging, full test coverage
+
 
 ---
 
