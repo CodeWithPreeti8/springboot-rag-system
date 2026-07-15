@@ -317,6 +317,7 @@ Pattern: \bjava\b
 ## 📊 Test Results
 
 | Test Case | Query | Document | Result |
+|------------|------------------------------------------|----------|----------|
 | Test 1 | "What is Java?" | Java Programming | ✅ PASS |
 | Test 2 | "Which framework simplifies Java dev?" | Spring Boot | ✅ PASS |
 | Test 3 | "What is Python?" | Python Data Science | ✅ PASS |
