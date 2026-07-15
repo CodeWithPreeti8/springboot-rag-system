@@ -99,27 +99,30 @@ Score > 0? ──→ YES → Select Document ──┐
 ✅ Maven 3.8+
 ✅ Groq API Key (free from console.groq.com)
 
+---
+
 ### Installation
-```bash
-# Clone repository
+
+    bash
+// Clone repository
 git clone https://github.com/CodeWithPreeti8/springboot-rag-system.git
 cd springboot-rag-system
 
-# Set environment variables (Windows PowerShell)
+// Set environment variables (Windows PowerShell)
 $env:GROQ_API_KEY = "your_api_key"
 $env:DB_PASSWORD = "your_postgres_password"
 
-# Set environment variables (Linux/Mac)
+// Set environment variables (Linux/Mac)
 export GROQ_API_KEY="your_api_key"
 export DB_PASSWORD="your_postgres_password"
 
-# Create database
+// Create database
 psql -U postgres -c "CREATE DATABASE rag_system;"
 
-# Build project
+// Build project
 mvn clean install
 
-# Start application
+// Start application
 mvn spring-boot:run
 
 ---
@@ -345,12 +348,13 @@ Environment Variables Required:
 
 ---
 
-👤 Author
+## 👤 Author
 
 Preeti Singh
 Backend Java Developer | AI/ML Enthusiast | Building in Public
 
-
-GitHub: @CodeWithPreeti8
+**GitHub:** @CodeWithPreeti8
+**LinkedIn:** Preeti Singh
+**Email:** singpreeti08@gmail.com
 LinkedIn: Preeti Singh
 Email: singpreeti08@gmail.com
